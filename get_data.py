@@ -16,6 +16,7 @@ SCOPES = ["https://www.googleapis.com/auth/spreadsheets.readonly"]
 
 @app.route('/get_data', methods=['GET'])
 def get_data():
+    return jsonify({"data": "test data"})  # временный ответ для проверки
     try:
         # Получаем данные из переменных окружения
         credentials_json = {
