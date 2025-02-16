@@ -4,7 +4,7 @@ import json
 from google_sheets import read_data  # Импорт функции для чтения данных
 
 app = Flask(__name__)
-CORS(app)  # Разрешаем CORS для всех доменов
+CORS(app, resources={r"/*": {"origins": "*"}})  # Разрешаем доступ всем
 
 @app.route("/get_data", methods=["GET"])
 def get_data():
