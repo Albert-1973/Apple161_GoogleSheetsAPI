@@ -8,9 +8,9 @@ def get_data():
     """Эндпоинт для получения данных из Google Sheets"""
     try:
         data = read_data()
-        return jsonify({"data": data})  # <-- Удалили лишние аргументы
+        return jsonify({"data": data})  # <-- Здесь правильный вызов jsonify
     except Exception as e:
-        return jsonify(error=str(e)), 500  # <-- Передаем ошибку правильно
+        return jsonify({"error": str(e)}), 500  # <-- Ошибка тоже передается правильно
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=10000)
