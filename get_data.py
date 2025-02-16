@@ -1,5 +1,6 @@
 from flask import Flask, jsonify
-from google_sheets import read_data
+import json
+from google_sheets import read_data  # Импорт функции для чтения данных
 
 app = Flask(__name__)
 
@@ -7,10 +8,14 @@ app = Flask(__name__)
 def get_data():
     """Эндпоинт для получения данных из Google Sheets"""
     try:
-        data = read_data()
-        return jsonify({"data": data}, ensure_ascii=False), 200  # <-- Здесь правильный вызов jsonify
+        data = read_data()  # Читаем данные из таблицы
+        return app.response_class(
+            response=json.dumps({"data": data}, ensure_ascii=False, indent=4),
+            status=200,
+            mimetype="application/json"
+        )
     except Exception as e:
-        return jsonify({"error": str(e)}), 500  # <-- Ошибка тоже передается правильно
+        return jsonify(error=str(e)), 500
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=10000)
