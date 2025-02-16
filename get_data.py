@@ -17,5 +17,18 @@ def get_data():
     except Exception as e:
         return jsonify(error=str(e)), 500
 
+@app.route("/get_products", methods=["GET"])
+def get_products():
+    """Эндпоинт для получения списка товаров"""
+    try:
+        data = read_data()  # Получаем данные из таблицы
+        return app.response_class(
+            response=json.dumps({"data": data}, ensure_ascii=False, indent=4),
+            status=200,
+            mimetype="application/json"
+        )
+    except Exception as e:
+        return jsonify(error=str(e)), 500
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=10000)
