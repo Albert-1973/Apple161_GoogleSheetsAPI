@@ -1,4 +1,5 @@
-from flask import Flask, jsonify
+from flask import Flask, Response
+import json
 import gspread
 from google.oauth2.service_account import Credentials
 
@@ -19,9 +20,11 @@ sheet = client.open_by_key(SPREADSHEET_ID).worksheet("Лист2")
 def get_data():
     try:
         data = sheet.get_all_records()  
-        return jsonify(data, ensure_ascii=False)  # 🛠 Исправлено: теперь будет русская кодировка
+        json_data = json.dumps(data, ensure_ascii=False)  # 👈 Правильная кодировка JSON
+        return Response(json_data, content_type="application/json; charset=utf-8")  # 👈 Исправленный возврат данных
     except Exception as e:
-        return jsonify({"error": str(e)}), 500  
+        error_message = json.dumps({"error": str(e)}, ensure_ascii=False)
+        return Response(error_message, content_type="application/json; charset=utf-8", status=500)  
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=10000)
