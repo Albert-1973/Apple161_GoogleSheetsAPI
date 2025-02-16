@@ -19,7 +19,11 @@ sheet = client.open_by_key(SPREADSHEET_ID).worksheet("Лист2")
 def get_data():
     try:
         data = sheet.get_all_records()  
-        return jsonify(data, ensure_ascii=False), 200  # Исправляем кодировку
+        return app.response_class(
+            response=jsonify(data, ensure_ascii=False).get_data(as_text=True),
+            status=200,
+            mimetype="application/json"
+        )
     except Exception as e:
         return jsonify({"error": str(e)}), 500  
 
