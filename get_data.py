@@ -13,7 +13,7 @@ client = gspread.authorize(creds)
 
 # Указанный ID твоей таблицы
 SPREADSHEET_ID = "1IgCoywkrGDi02C2WxFANPJIswbd5u43LI2pd845bClo"
-sheet = client.open_by_key(SPREADSHEET_ID).sheet1  # Первый лист
+sheet = client.open_by_key(SPREADSHEET_ID).worksheet("Лист2")
 
 @app.route('/get_data', methods=['GET'])
 def get_data():
