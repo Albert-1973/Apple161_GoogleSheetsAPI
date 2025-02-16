@@ -8,7 +8,7 @@ def get_data():
     """Эндпоинт для получения данных из Google Sheets"""
     try:
         data = read_data()  # Читаем данные из таблицы
-        return jsonify(data)  # Flask сам обрабатывает кодировку
+        return jsonify(data)  # Flask автоматически обрабатывает кодировку
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
