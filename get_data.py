@@ -1,36 +1,16 @@
 from flask import Flask, jsonify
-import gspread
-from google.oauth2.service_account import Credentials
+from google_sheets import read_data
 
 app = Flask(__name__)
 
-# Подключение к Google Sheets
-SERVICE_ACCOUNT_FILE = "service_account.json"
-SCOPES = ["https://www.googleapis.com/auth/spreadsheets"]
-
-creds = Credentials.from_service_account_file(SERVICE_ACCOUNT_FILE, scopes=SCOPES)
-client = gspread.authorize(creds)
-
-# ID таблицы Google Sheets
-SPREADSHEET_ID = "1IgCoywkrGDi02C2WxFANPJIswbd5u43LI2pd845bClo"
-SHEET_NAME = "Лист2"
-
-@app.route('/get_data', methods=['GET'])
+@app.route("/get_data", methods=["GET"])
 def get_data():
+    """Эндпоинт для получения данных из Google Sheets"""
     try:
-        sheet = client.open_by_key(SPREADSHEET_ID).worksheet(SHEET_NAME)
-        data = sheet.get_all_records()
-
-        # Фильтруем товары по наличию
-        filtered_data = [row for row in data if row.get("наличие") and row["наличие"].lower() != "нет"]
-
-        if not filtered_data:
-            return jsonify({"message": "К сожалению, в наличии сейчас ничего нет."})
-
-        return jsonify(filtered_data)
-
+        data = read_data()
+        return jsonify({"data": data}), 200
     except Exception as e:
-        return jsonify({"error": str(e)})
+        return jsonify({"error": str(e)}), 500
 
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=10000)
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=10000)
