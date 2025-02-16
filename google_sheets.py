@@ -8,10 +8,10 @@ SERVICE_ACCOUNT_FILE = "service_account.json"  # Файл с ключами се
 creds = Credentials.from_service_account_file(SERVICE_ACCOUNT_FILE, scopes=SCOPES)
 client = gspread.authorize(creds)
 
-# ID таблицы (возьмите из ссылки)
+# ID таблицы (замените на свой)
 SPREADSHEET_ID = "1IgCoywkrGDi02C2WxFANPJIswbd5u43LI2pd845bClo"
 
 def read_data():
     """Читает данные из Google Sheets"""
-    sheet = client.open_by_key(SPREADSHEET_ID).sheet1  # Открывает первый лист
-    return sheet.get_all_records()  # Возвращает данные в виде списка словарей
+    sheet = client.open_by_key(SPREADSHEET_ID).sheet1  # Открываем первый лист
+    return sheet.get_all_records()  # Возвращаем данные в виде списка словарей
