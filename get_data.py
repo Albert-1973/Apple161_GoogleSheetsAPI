@@ -11,8 +11,8 @@ SCOPES = ["https://www.googleapis.com/auth/spreadsheets.readonly"]
 creds = Credentials.from_service_account_file(SERVICE_ACCOUNT_FILE, scopes=SCOPES)
 client = gspread.authorize(creds)
 
-# Укажи ID своей Google-таблицы (из URL)
-SPREADSHEET_ID = "ТВОЙ_ID_ТАБЛИЦЫ"
+# Указанный ID твоей таблицы
+SPREADSHEET_ID = "1IgCoywkrGDi02C2WxFANPJIswbd5u43LI2pd845bClo"
 sheet = client.open_by_key(SPREADSHEET_ID).sheet1  # Первый лист
 
 @app.route('/get_data', methods=['GET'])
