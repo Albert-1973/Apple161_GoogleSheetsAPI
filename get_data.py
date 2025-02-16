@@ -8,7 +8,7 @@ def get_data():
     """Эндпоинт для получения данных из Google Sheets"""
     try:
         data = read_data()
-        return jsonify(data), 200  # <-- Здесь правильный вызов jsonify
+        return jsonify({"data": data}, ensure_ascii=False), 200  # <-- Здесь правильный вызов jsonify
     except Exception as e:
         return jsonify({"error": str(e)}), 500  # <-- Ошибка тоже передается правильно
 
