@@ -5,13 +5,13 @@ from google.oauth2.service_account import Credentials
 app = Flask(__name__)
 
 # Подключение к Google Sheets API
-SERVICE_ACCOUNT_FILE = "service_account.json"  
+SERVICE_ACCOUNT_FILE = "service_account.json"
 SCOPES = ["https://www.googleapis.com/auth/spreadsheets.readonly"]
 
 creds = Credentials.from_service_account_file(SERVICE_ACCOUNT_FILE, scopes=SCOPES)
 client = gspread.authorize(creds)
 
-# Открываем Лист2
+# Открываем нужный лист (Лист2)
 SPREADSHEET_ID = "1IgCoywkrGDi02C2WxFANPJIswbd5u43LI2pd845bClo"
 sheet = client.open_by_key(SPREADSHEET_ID).worksheet("Лист2")
 
@@ -19,11 +19,7 @@ sheet = client.open_by_key(SPREADSHEET_ID).worksheet("Лист2")
 def get_data():
     try:
         data = sheet.get_all_records()  
-        return app.response_class(
-            response=jsonify(data, ensure_ascii=False).get_data(as_text=True),
-            status=200,
-            mimetype="application/json"
-        )
+        return jsonify(data)  # Просто возвращаем JSON-ответ без лишних параметров
     except Exception as e:
         return jsonify({"error": str(e)}), 500  
 
