@@ -1,10 +1,18 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request  # Добавили request для логирования
 from flask_cors import CORS
 import json
 from google_sheets import read_data  # Импорт функции для чтения данных
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})  # Разрешаем доступ всем
+
+# Логирование всех запросов
+@app.before_request
+def log_request_info():
+    print(f"Получен запрос: {request.method} {request.url}")
+    print(f"Заголовки: {dict(request.headers)}")
+    if request.data:
+        print(f"Тело запроса: {request.data.decode('utf-8')}")
 
 @app.route("/get_data", methods=["GET"])
 def get_data():
@@ -37,5 +45,5 @@ def get_products():
 
 if __name__ == "__main__":
     from waitress import serve
-    serve(app, host="0.0.0.0", port=10000)
+    app.run(host="0.0.0.0", port=10000)
 
