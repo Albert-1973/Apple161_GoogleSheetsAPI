@@ -5,7 +5,7 @@ from google.oauth2.service_account import Credentials
 app = Flask(__name__)
 
 # Подключение к Google Sheets
-SERVICE_ACCOUNT_FILE = "service_account.json"  # Убедись, что этот файл загружен в Render
+SERVICE_ACCOUNT_FILE = "service_account.json"
 SCOPES = ["https://www.googleapis.com/auth/spreadsheets"]
 
 creds = Credentials.from_service_account_file(SERVICE_ACCOUNT_FILE, scopes=SCOPES)
@@ -13,7 +13,7 @@ client = gspread.authorize(creds)
 
 # ID таблицы Google Sheets
 SPREADSHEET_ID = "1IgCoywkrGDi02C2WxFANPJIswbd5u43LI2pd845bClo"
-SHEET_NAME = "Лист2"  # Убедись, что лист действительно называется "Лист2"
+SHEET_NAME = "Лист2"
 
 @app.route('/get_data', methods=['GET'])
 def get_data():
@@ -21,7 +21,7 @@ def get_data():
         sheet = client.open_by_key(SPREADSHEET_ID).worksheet(SHEET_NAME)
         data = sheet.get_all_records()
 
-        # Фильтрация товаров по наличию
+        # Фильтруем товары по наличию
         filtered_data = [row for row in data if row.get("наличие") and row["наличие"].lower() != "нет"]
 
         if not filtered_data:
