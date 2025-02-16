@@ -4,22 +4,22 @@ from google.oauth2.service_account import Credentials
 
 app = Flask(__name__)
 
-# Подключение к Google Sheets
-SERVICE_ACCOUNT_FILE = "service_account.json"  # Должен быть загружен в Render
+# Подключение к Google Sheets API
+SERVICE_ACCOUNT_FILE = "service_account.json"  # Файл с ключом (должен быть загружен в Render)
 SCOPES = ["https://www.googleapis.com/auth/spreadsheets.readonly"]
 
 creds = Credentials.from_service_account_file(SERVICE_ACCOUNT_FILE, scopes=SCOPES)
 client = gspread.authorize(creds)
 
-# Вставь ID своей Google-таблицы (из URL)
-SPREADSHEET_ID = "1IgCoywkrGDi02C2WxFANPJIswbd5u43LI2pd845bClo"
+# Укажи ID своей Google-таблицы (из URL)
+SPREADSHEET_ID = "ТВОЙ_ID_ТАБЛИЦЫ"
 sheet = client.open_by_key(SPREADSHEET_ID).sheet1  # Первый лист
 
 @app.route('/get_data', methods=['GET'])
 def get_data():
     try:
         data = sheet.get_all_records()  # Читаем данные из таблицы
-        return jsonify(data)  # Отправляем их в JSON-формате
+        return jsonify(data), 200, {'Content-Type': 'application/json; charset=utf-8'}  # Исправили кодировку
     except Exception as e:
         return jsonify({"error": str(e)}), 500  # Если произошла ошибка
 
