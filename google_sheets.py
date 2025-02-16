@@ -30,3 +30,8 @@ try:
 
 except Exception as e:
     print(f"Ошибка подключения к Google Sheets: {e}")
+    
+if __name__ == "__main__":
+    print("Читаем данные из Google Sheets...")
+    data = read_data()
+    print("Полученные данные:", data)
